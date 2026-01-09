@@ -1,0 +1,188 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        /* body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            margin-top: auto; 
+            margin-bottom: auto; 
+        } */
+        body::before {
+            content: "";
+            background-image: url("{% static 'bgimage.jpeg' %}"); /* Use the static template tag for the image path */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: brightness(0.3); /* Adjust brightness value for the darkening effect */
+        }
+        
+
+        .patient-reg {
+            margin: 0;
+            font-size: 25px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+        
+        
+
+
+/* Navbar Styling */
+.navbar {
+    width: 96%;
+    background-color:  #0bb7e1;
+    padding: 19px 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    margin: 0;
+    font-size: 25px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user {
+  font-size: 18px;
+}
+
+/* Form Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  text-align: center; /* Center body text */
+}
+
+.content-section {
+  max-width: 500px;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: center; /* Center form group text */
+}
+
+legend {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center; /* Center legend text */
+}
+
+label {
+  font-weight: bold;
+  text-align: center; /* Center label text */
+  padding-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[name="phone_number"],
+input[type="number"],
+select{
+  width: 100%;
+  height: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  text-align: center; /* Center input text */
+}
+
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0bb7e1;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center; /* Center button text */
+}
+
+.btn:hover {
+  background-color: #555;
+}
+
+.text-muted {
+  color: #888;
+  text-align: center; /* Center muted text */
+}
+
+a {
+  color: #7d0be1;
+  text-decoration: none;
+  text-align: center; /* Center link text */
+}
+
+a:hover {
+  text-decoration: underline;
+}
+    </style>
+</head>
+{% load crispy_forms_tags %}
+<body>
+  
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a href="{% url 'home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+    </div>
+    <div class="patient-reg">Doctor Registration</div>
+    </nav>
+    <div class="content-section">
+        <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Register</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Register</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="/login/">Log In</a>
+            </small>
+        </div>
+    </div>
+</body>
+</html>

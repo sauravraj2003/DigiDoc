@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 25px;
+            background-color: #f8f8f8;
+        }
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-brand {
+            margin: 0;
+        }
+        .end-btn {
+            background-color: #daa521;
+            border: none;
+            width: 120px;
+            height: 40px;
+            font-size: 18px;
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        .end-btn::after {
+            content: "\2192"; /* Unicode for right arrow */
+            margin-left: 5px;
+        }
+        .end-btn:hover {
+            background-color: #c6951b;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        #searchInput {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        #searchButton {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2196f3;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #searchButton i {
+            margin-right: 5px;
+        }
+
+        #searchButton:hover {
+            background-color: #0b5a7e;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            /* //color: #0bb7e1; */
+        }
+
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; /* Adjust the gap between cards */
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            padding: 0 20px; /* Added padding */
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #555;
+        }
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+
+        @media (min-width: 768px) {
+            .card-container {
+                grid-template-columns: repeat(2, minmax(300px, 1fr)); /* Ensure only two profiles in one row on larger screens */
+            }
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static 'available.avif' %}'); background-size: cover;  ">     <nav class="navbar"></nav>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'patient:patient-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for doctors" onkeyup="searchDoctors()">
+            <button id="searchButton"><i class="fa fa-search"></i>Search</button>
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="end-btn" type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <h1>Doctor Profiles</h1>
+    <div class="card-container">
+        {% for profile in doctor_profiles %}
+            <div class="card">
+                <h2> {{ profile.doctor_user.name }}</h2>
+                <p><strong>Username: </strong> {{ profile.doctor_user.user }}</p>
+                <p><strong>Specialization:</strong> {{ profile.specialization }}</p>
+                <p><strong>Hospital:</strong> {{ profile.hospital }}</p>
+                <p><strong>Working Days:</strong>
+                    {% for day in profile.working_days.all %}
+                        {{ day.name }}
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <p><strong>Phone number: {{profile.doctor_user.phone_number}}</strong></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function searchDoctors() {
+            var input, filter, cards, card, h2, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            cards = document.getElementsByClassName('card');
+
+            // Loop through all cards, and hide those who don't match the search query
+            for (i = 0; i < cards.length; i++) {
+                h2 = cards[i].getElementsByTagName('h2')[0];
+                txtValue = h2.textContent || h2.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    cards[i].style.display = '';
+                } else {
+                    cards[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

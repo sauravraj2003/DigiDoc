@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+
+     
+        .container {
+            text-align: center;
+            margin-top: auto; 
+            margin-bottom: auto; 
+        } */
+        
+
+        .patient-reg {
+            margin: 0;
+            font-size: 25px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          background-color: #f8f8f8;
+         
+           
+        
+      }
+      
+    
+    
+    
+    
+    
+    
+    
+        
+      .navbar {
+          background-color: #0bb7e1;
+          padding: 30px 25px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-weight: bold;
+          font-size: 25px;
+      }
+        
+      .navbar-brand {
+          margin: 0;
+      }
+
+      .end-buttons {
+          display: flex;
+          align-items: center;
+      }
+
+      .end-buttons button {
+          margin-left: 10px;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          background-color: #daa521;
+          color: #fff;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.3s;
+      }
+
+      .end-buttons button:last-child {
+          margin-right: 10px;
+      }
+
+      .end-buttons button:hover {
+          background-color: #c6951b;
+      }
+        
+        
+
+
+
+
+.name {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.user {
+  font-size: 18px;
+}
+
+/* Form Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  text-align: center; /* Center body text */
+}
+
+.content-section {
+  max-width: 500px;
+  margin: 50px auto;
+  background-color: white ;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: center; /* Center form group text */
+}
+
+legend {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center; /* Center legend text */
+}
+
+label {
+  font-weight: bold;
+  text-align: center; /* Center label text */
+  padding-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[name="phone_number"],
+input[type="number"],
+select{
+  width: 100%;
+  height: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+  text-align: center; /* Center input text */
+}
+
+
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #0bb7e1;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-align: center; /* Center button text */
+}
+
+.btn:hover {
+  background-color: #555;
+}
+
+.text-muted {
+  color: #888;
+  text-align: center; /* Center muted text */
+}
+
+a {
+  color: #7d0be1;
+  text-decoration: none;
+  text-align: center; /* Center link text */
+}
+
+a:hover {
+  text-decoration: underline;
+}
+background{
+  opacity:0.02;
+}
+    </style>
+</head>
+{% load crispy_forms_tags %}
+<body style="background-image: url('{% static 'app.jpg' %}'); background-size: cover;  ">
+
+
+    
+    <nav class="navbar">
+      <div class="navbar-brand">
+          <a href="{% url 'doctor:doctor-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+      </div>
+      <div class="patient-reg">Schedule Appointment</div>
+      <div class="end-buttons">
+          
+          <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit1">Logout</button>
+          </form>
+      </div>
+  </nav>
+    <div class="content-section">
+        <form method="POST">
+            <h3>Please enter a valid date in YYYY-MM-DD HH:MM format (HH:MM in 24 hr format) </h3>
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Add Follow-Up Date</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Submit</button>
+            </div>
+        </form>
+        <!-- <div class="border-top pt-3">
+            <small class="text-muted">
+                Do not have an account? <a class="ml-2" href="/reg/">Register</a>
+            </small>
+        </div> -->
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- {% block content %}
+
+<h2>Please enter the Date in YYYY-MM-DD HH:MM format and ensure that HH:MM is in 24hr format</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %} -->

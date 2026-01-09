@@ -1,0 +1,237 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Upload Documents</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+        
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 25px;
+        }
+        
+        .navbar-brand {
+            margin: 0;
+        }
+        
+        .end-buttons {
+            display: flex;
+            align-items: center;
+        }
+        
+        .end-buttons button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #daa521;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .end-buttons button:last-child {
+            margin-right: 10px;
+        }
+        
+        .end-buttons button:hover {
+            background-color: #c6951b;
+        }
+        
+        .container {
+            padding: 40px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        
+        .upload-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            width: 50%;
+        }
+        
+        .uploaded-documents {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .prescription-card {
+            width: 240px;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .prescription-card:hover {
+            border-color: #0bb7e1;
+        }
+        
+        .prescription-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+            color: red;
+        }
+        
+        .prescription-link {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            word-wrap: break-word;
+        }
+        
+        .prescription-type,
+        .prescription-by-doctor {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        form {
+            margin-bottom: 20px;
+        }
+        button[type="submit"]{
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0bb7e1;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-align: center; /* Center button text */
+        }
+        select{
+            width: 100%;
+            height: 30px;
+            margin-bottom: 30px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            text-align: center; /* Center input text */
+        }
+        input[type="file"] {
+            width: 100%;
+            height: 40px; /* Increased height for better visibility */
+            margin-bottom: 8px;
+            padding: 5px; /* Adjusted padding for better appearance */
+            border-radius: 5px;
+            background-color: #f8f8f8; /* Added background color */
+            color: #333; /* Added text color */
+            outline: none; /* Removed outline on focus */
+            transition: border-color 0.3s ease; /* Added transition effect */
+        }
+
+        input[type="file"]:hover {
+            border-color: #0bb7e1; /* Adjusted border color on hover */
+        }
+        input[type="file"]::-webkit-file-upload-button {
+            cursor: pointer; /* Added pointer cursor */
+            background-color: #0bb7e1; /* Changed button background color */
+            color: #fff; /* Changed button text color */
+            padding: 10px 20px; /* Adjusted button padding */
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+        input[type="file"]::-webkit-file-upload-button:hover {
+            background-color: #08a1d8; /* Adjusted button background color on hover */
+        }
+
+
+
+        
+        
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+{% load crispy_forms_tags %}
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'doctor:doctor-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <div class="patient-reg">Patient Documents</div>
+        <div class="end-buttons">
+            
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit1">Logout</button>
+            </form>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" style="max-width: 400px; margin: auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            {% csrf_token %}
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="margin-bottom: 10px;">Upload Documents</h2>
+            </div>
+            <div style="margin-bottom: 20px;">
+                {{ form|crispy }}
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" style="padding: 10px 20px; background-color: #0bb7e1; color: #fff; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s;">Submit</button>
+            </div>
+        </form>
+        
+
+        <hr> <!-- Add a horizontal line to visually separate the sections -->
+        
+        <h2>Documents Shared by {{ patient.name }}</h2>
+
+        <div class="uploaded-documents">
+            {% for shared_doc in shared_docs %}
+            <div class="prescription-card">
+                <i class="fas fa-file-alt prescription-icon" style="font-size: 100px;"></i> <!-- Font Awesome icon -->
+                <div> 
+                    <h3 class="prescription-link">{{ shared_doc.document.document_name }}</h3> <!-- Applied prescription-link class -->
+                    <p class="prescription-type">Type: {{ shared_doc.document.get_type_display }}</p>
+                    <p class="prescription-by-doctor">Uploaded by: {{ shared_doc.verified|yesno:"Doctor,Patient" }}</p>
+                    <p>Comments: {{ shared_doc.comments }}</p>
+                    <a href="{{ shared_doc.document.file.url }}" target="_blank">View Document</a>
+                </div>
+            </div>
+            {% empty %}
+            <p>No documents shared by this patient.</p>
+            {% endfor %}
+        </div>
+  
+        
+    </div>
+    
+</body>
+</html>

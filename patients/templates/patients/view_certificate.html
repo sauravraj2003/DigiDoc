@@ -1,0 +1,206 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Medical Certificates</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            font-size: 25px;
+            background-color: #f8f8f8;
+          }
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .navbar-brand {
+            margin: 0;
+          }
+          .end-btn {
+            background-color: #daa521;
+            border: none;
+            width: 120px;
+            height: 40px;
+            font-size: 18px;
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+          }
+          .end-btn::after {
+            content: "\2192"; /* Unicode for right arrow */
+            margin-left: 5px;
+          }
+          .end-btn:hover {
+            background-color: #c6951b;
+          }
+    
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            font-size: 14px;
+            border: none;
+            border-radius: 15px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .container h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #0bb7e1;
+        }
+        .prescription-card {
+            display: flex;
+            align-items: center;
+            width: 80%;
+            margin: 10px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .prescription-icon {
+            font-size: 50px;
+            margin-right: 20px;
+            color: #da4453;
+        }
+        .prescription-details {
+            flex-grow: 1;
+        }
+        .prescription-link {
+            color: #333;
+            font-size: 18px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .prescription-link:hover {
+            color: #0bb7e1;
+        }
+        .prescription-name {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+        .delete-btn {
+            background-color: #ff0000;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .prescription-by-doctor {
+            font-size: 14px;
+            color: #666;
+        }
+        .verified {
+            color: green; /* Color for verified */
+        }
+        .not-verified {
+            color: blue; /* Color for not verified */
+        }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+</head>
+<body style="background-image: url('{% static 'bg.jpg' %}'); background-size: cover;  ">    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'patient:patient-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="searchDocuments()" placeholder="Search by document name...">
+        </div>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button class="end-btn" type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <div class="container">
+        <h1>Certificates</h1>
+        <div id="prescriptionContainer">
+            {% for prescription in certificate %}
+            <div class="prescription-card" id="certificate-{{ prescription.id }}">
+                <i class="fas fa-file-pdf prescription-icon"></i>
+                <div class="prescription-details">
+                    <a href="{{ prescription.file.url }}" target="_blank" class="prescription-link" title="{{ prescription.file.name }}">
+                        <div class="prescription-name">{{ prescription.document_name }}</div>
+                    </a>
+                    <div class="prescription-by-doctor">
+                        Uploaded by: 
+                        <span class="{% if prescription.verified %}verified{% else %}not-verified{% endif %}">
+                            {% if prescription.verified %}Doctor{% else %}Patient{% endif %}
+                        </span>
+                        Comments: {{ prescription.comments }}
+                    </div>
+                </div>
+                <button class="delete-btn" onclick="deleteCertificate('{{ prescription.id }}')">X</button>
+            </div>
+            {% empty %}
+            <p>No certificate available.</p>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        function searchDocuments() {
+            var input, filter, container, prescriptions, prescriptionName, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            container = document.getElementById('prescriptionContainer');
+            prescriptions = container.getElementsByClassName('prescription-card');
+            for (i = 0; i < prescriptions.length; i++) {
+                prescriptionName = prescriptions[i].getElementsByClassName("prescription-name")[0];
+                txtValue = prescriptionName.textContent || prescriptionName.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    prescriptions[i].style.display = "";
+                } else {
+                    prescriptions[i].style.display = "none";
+                }
+            }
+        }
+
+        function deleteCertificate(certificateId) {
+            event.preventDefault();
+            var url = '/patient/delete-certificate/' + certificateId + '/';
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById("certificate-" + certificateId).remove();
+                } else {
+                    console.error('Failed to delete certificate');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

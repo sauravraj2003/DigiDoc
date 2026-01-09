@@ -1,0 +1,303 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Current Medications</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+  
+  body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        font-size: 25px;
+        background-color: #f8f8f8;
+      }
+      .navbar {
+        background-color: #0bb7e1;
+        padding: 30px 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .navbar-brand {
+        margin: 0;
+      }
+      .end-btn {
+        background-color: #daa521;
+        border: none;
+        width: 120px;
+        height: 40px;
+        font-size: 18px;
+        color: #ffffff;
+        border-radius: 20px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s;
+      }
+      .end-btn::after {
+        content: "\2192"; /* Unicode for right arrow */
+        margin-left: 5px;
+      }
+      .end-btn:hover {
+        background-color: #c6951b;
+      }
+
+  
+  .container {
+    padding: 40px;
+    margin: 40px;
+    border: 1px solid #ccc;
+  }
+  
+  h1 {
+    margin: 0 0 20px;
+    font-size: 24px;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  legend {
+    border-bottom: 1px solid #ccc;
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group input[type="password"],
+  .form-group input[name="phone_number"],
+  .form-group input[name="age"],
+  .form-group select {
+    width: 100%;
+    height: 30px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    box-sizing: border-box;
+  }
+  
+  button[type="submit"] {
+    background-color: #0bb7e1;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #daa521;
+  }
+  
+  .end-btn {
+    background-color: #daa521;
+    border: none;
+    width: 120px;
+    height: 40px;
+    font-size: 18px;
+    color: #ffffff;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+  }
+  
+  .end-btn::after {
+    content: "\2192"; /* Unicode for right arrow */
+    margin-left: 5px;
+  }
+  
+  .end-btn:hover {
+    background-color: #c6951b;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  ul li {
+    margin-bottom: 10px;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  small {
+    color: #888;
+  }
+  
+  .prescription-card {
+    height: 100px; /* Set a fixed height for all prescription cards */
+    width: 200px;
+    position: relative;
+    padding: 20px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+    overflow: hidden; /* Prevent overflow of content */
+  }
+  
+  .prescription-icon {
+    font-size: 80px; /* Adjusted font size for the icon */
+    margin-bottom: 5px; /* Adjusted margin for spacing */
+    color: red;
+  }
+  
+  .prescription-link {
+    display: block;
+    color: black;
+    font-size: 16px; /* Adjusted font size for the link */
+    margin-bottom: 5px; /* Adjusted margin for spacing */
+    overflow: hidden; /* Prevent overflow of text */
+    white-space: nowrap; /* Prevent wrapping of text */
+    text-overflow: ellipsis; /* Show ellipsis (...) for overflow */
+  }
+  
+  .prescription-type {
+    font-size: 12px; /* Adjusted font size for the type */
+  }
+  
+  .delete-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .add-btn {
+    background-color: #daa521;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 15px 30px; /* Adjusted padding for larger size */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 20px; /* Adjusted font size */
+  }
+  
+  .add-btn:hover {
+    background-color: #c6951b;
+  }
+
+</style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a href="{% url 'patient:patient-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+    </div>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button class="end-btn" type="submit1">Logout</button>
+    </form>
+</nav>
+  
+  <div class="container">
+    
+    
+    <!-- Add button to toggle the form -->
+    <button id="add-prescription-btn" onclick="toggleForm()" class="add-btn">Add Current Prescription</button>
+    
+    <form method="post" enctype="multipart/form-data" id="medication-form" style="display: none;">
+      {% csrf_token %}
+      <br>
+      <fieldset class="form-group">
+        
+        {{ form|crispy }}
+      </fieldset>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+  <div class="container">
+    <h1>Your Current Prescriptions</h1>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center">
+      {% for document in medications %}
+      <div class="prescription-card">
+        <button class="delete-btn" onclick="deletePrescription(this, '{{ document.id }}')">X</button>
+        <a href="{{ document.file.url }}" target="_blank" class="prescription-link">
+          <i class="far fa-file-pdf prescription-icon"></i>
+          {{ document.document_name }}
+          <br>
+          <span class="prescription-type">PDF Document</span>
+        </a>
+      </div>
+      {% empty %}
+            <p>No current prescriptions.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    function toggleForm() {
+      var form = document.getElementById("medication-form");
+      if (form.style.display === "none") {
+        form.reset(); // Reset the form
+        form.style.display = "block";
+      } else {
+        form.style.display = "none";
+      }
+    }
+
+    function deletePrescription(btn, medicationId) {
+      var card = btn.closest('.prescription-card');
+      var url = '/patient/delete-medication/' + medicationId + '/';  // Adjust the URL as per your Django URL configuration
+      fetch(url, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          card.remove(); // Remove the card from the UI
+        } else {
+          console.error('Failed to delete medication');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+  </script>
+</body>
+</html>

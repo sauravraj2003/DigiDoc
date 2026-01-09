@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/yourcode.js"
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            margin-top: auto; /* Pushes the container to the bottom of the flex container */
+            margin-bottom: auto; /* Pushes the container to the bottom of the flex container */
+        }
+        .navbar {
+            width: 96%;
+            background-color: #f0f0f0;
+            padding: 19px 2%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            margin: 0;
+            font-size: 25px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        .doctor-login {
+            margin: 0;
+            font-size: 25px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+        }
+        .login-form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            background-color: #f0f0f0;
+            width: calc(100% - 40px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            padding-left: 40px;
+        }
+        .login-form input[type="submit"] {
+            width: 50%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #2e1eaa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .login-form input[type="submit"]:hover {
+            background-color: #1a0d66;
+        }
+        .New {
+            font-size: 15px;
+            color: #333;
+        }   
+        .register {
+            color: #2e1eaa;
+            cursor: pointer;
+        }
+        .row {
+            position: relative;
+        }
+        .row i {
+            position: absolute;
+            left: 10%;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #000000;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+        <div class="navbar-brand">DocuMED</div>
+        <div class="doctor-login">Doctor Login</div>
+    </div>
+
+    <div class="container">
+      <div class="login-form">
+        <form method="POST">
+          {% csrf_token %} {{form}}
+          <!--
+                <div class="row">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Phone no./ email address">
+                </div>
+                <div class="row">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password">
+                </div>
+            -->
+          <div class="row">
+            <input type="submit" value="Login" />
+          </div>
+
+          <p class="New">
+            Don't have an account?
+            <span class="New"
+              ><a href="{% url 'doctor:RegisterDoc' %}">Sign Up</a></span
+            >
+          </p>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

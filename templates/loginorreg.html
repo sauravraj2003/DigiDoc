@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Website</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Resetting default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styling */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-image: url("{% static 'backgroundhome.jpg' %}");
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar {
+    background-color: rgba(34, 34, 34, 0.9); /* Dark background color with opacity */
+    padding: 20px 0;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 20px;
+    transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: rgba(68, 68, 68, 0.9);
+    border-radius: 5px;
+}
+
+/* Styling for active link */
+.link-active {
+    background-color: rgba(85, 85, 85, 0.9);
+}
+
+.section {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.section1 {
+    background-color: rgba(240, 240, 240, 0.05 ); /* Light background color with opacity */
+    display: flex;
+    justify-content: space-around;
+}
+
+.section1-content {
+    width: 50%;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    padding: 40px; /* Increased padding for better spacing */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+.section1-content h1 {
+    font-size: 32px; /* Larger font size for headings */
+    margin-bottom: 20px; /* Increased bottom margin for spacing */
+}
+
+.section1-content p {
+    font-size: 18px; /* Font size for paragraphs */
+    line-height: 1.6; /* Increased line height for readability */
+}
+
+
+.section1-content .highlight {
+    font-weight: bold; /* Highlight important text */
+    color: #007bff; /* Change color to a blue shade */
+}
+
+
+
+.section2 {
+    background-image: url("{% static 'team.jpg' %}");
+    background-size: cover;
+    background-color: rgba(224, 224, 224, 1.0); /* Lighter background color with opacity */
+    width: 100%;
+    color:white;
+}
+
+/* Typing animation */
+.typing-container {
+    position: relative;
+    width: 50%;
+    padding: 20px;
+}
+
+#typing-text {
+    font-size: 130px;
+    color: #333;
+    line-height: 1.2;
+    white-space: pre-line;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    color: #000;
+}
+.section2 {
+    {% comment %} background-color: rgba(224, 224, 224, 0.9); /* Lighter background color with opacity */ {% endcomment %}
+    padding: 40px 20px; /* Adjust padding as needed */
+    text-align: center;
+}
+
+.team-members {
+    justify-content: center;
+}
+
+.team-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px; /* Add margin between rows */
+}
+
+.team-member {
+    text-align: center;
+    margin: 20px;
+    width: calc(20% - 40px); /* Adjust width of each member */
+    max-width: 180px; /* Set maximum width for flexibility */
+}
+
+.team-member img {
+    width: 150px; /* Fixed width */
+    height: 150px; /* Fixed height */
+    border-radius: 50%; /* Make the image circular */
+    border: 3px solid #007bff; /* Add a border with a blue color */
+    margin-left: 4px; /* Add margin to the left for separation */
+}
+
+
+.team-member p {
+    margin-top: 10px;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="navbar">
+    <div>
+        <a href="#section1" class="link link-home">Home</a>
+        <a href="#section2" class="link link-team">Team</a>
+    </div>
+    <div>
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'land' %}">Register</a>
+    </div>
+</div>
+
+<section id="section1" class="section section1">
+    <div class="typing-container">
+        <div id="typing-text"></div>
+    </div>
+    <div class="section1-content">
+        <h1>Purpose</h1>
+        <p>DocuMed is a patient-doctor interface that offers a comprehensive solution for managing all medical document-related challenges. It provides a centralized repository to store a variety of patient documents, including <span class="highlight">medical certificates</span>, <span class="highlight">scans</span>, <span class="highlight">prescriptions</span>, and <span class="highlight">lab reports</span>, which patients can access at any time. Additionally, patients can securely share these documents with their doctors digitally while ensuring privacy.</p>
+        <p> Moreover, doctors can upload medical prescriptions and schedule appointments, <span class="highlight">enhancing the efficiency of medical record management and patient care</span>.</p>
+    </div>
+</section>
+
+<section id="section2" class="section section2">
+    <h1>Meet the Team</h1>
+    <div class="team-members">
+        <!-- First row -->
+        <div class="team-row">
+            <div class="team-member">
+                <img src="{% static 'aarsh.png' %}" alt="Team Member 1">
+                <p>Aarsh Ashish Walavalkar</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'ankit.png' %}" alt="Team Member 2">
+                <p>Ankit Kaushik</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'bhaumik.jpg' %}" alt="Team Member 3">
+                <p>Bhaumik Bhavesh Chawda</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'agarwal.png' %}" alt="Team Member 4">
+                <p>Devansh Agrawal</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'bansal.png' %}" alt="Team Member 5">
+                <p>Devansh Bansal</p>
+            </div>
+        </div>
+
+        <!-- Second row -->
+        <div class="team-row">
+            <div class="team-member">
+                <img src="{% static 'nilay.jpg' %}" alt="Team Member 6">
+                <p>Nilay Agarwal</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'Purav.png' %}" alt="Team Member 7">
+                <p>Purav Jangir</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'ruthvik.png' %}" alt="Team Member 10">
+                <p>Ruthvik Jagan Shiva Sai Tunuguntla</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'divit.png' %}" alt="Team Member 8">
+                <p>Shah Divit Ritesh</p>
+            </div>
+            <div class="team-member">
+                <img src="{% static 'shaurya.jpg' %}" alt="Team Member 9">
+                <p>Shaurya Sharma</p>
+            </div>
+            
+            <div class="team-member">
+                <img src="{% static 'tanushphoto.jpg' %}" alt="Team Member 11">
+                <p>Tanush Goel</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initially highlight the "Home" navbar link
+    document.querySelector('.link-home').classList.add('link-active');
+    
+    const homeSection = document.getElementById('section1');
+    const typingTextElement = document.getElementById('typing-text');
+    const text = "Welcome to\nDocuMed"; // Use newline character \n
+    let index = 0;
+
+    function type() {
+        if (index < text.length) {
+            typingTextElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(type, 200);
+        } else {
+            index = 0;
+            typingTextElement.textContent = '';
+            setTimeout(type, 1000);
+        }
+    }
+
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    if (isInViewport(homeSection)) {
+        type();
+    }
+});
+
+document.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('.section');
+    const navbarLinks = document.querySelectorAll('.link');
+
+    sections.forEach((section, index) => {
+        const rect = section.getBoundingClientRect();
+        const isSectionVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+
+        if (isSectionVisible || (rect.top <= 0 && rect.bottom >= 0)) {
+            // Remove 'link-active' class from all navbar links
+            navbarLinks.forEach(link => link.classList.remove('link-active'));
+            // Add 'link-active' class to the corresponding navbar link
+            navbarLinks[index].classList.add('link-active');
+        }
+    });
+});
+document.querySelectorAll('.link').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const target = document.querySelector(this.getAttribute('href'));
+        target.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+</script>
+
+</body>
+</html>

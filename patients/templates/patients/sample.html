@@ -1,0 +1,85 @@
+<script>
+    const doctorsInput = document.getElementById('doctors');
+    const dropdownContent = document.querySelector('.dropdown-content');
+    const selectedDoctorsContainer = document.querySelector('.selected-doctors');
+    const searchIcon = document.getElementById('search-icon');
+
+    // Add this code inside the input event listener for the doctorsInput field
+    doctorsInput.addEventListener('focus', function() {
+        dropdownContent.style.display = 'block';
+    });
+
+    // Modify the input event listener to also show the dropdown content when there is input
+    doctorsInput.addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const options = dropdownContent.children;
+
+        // Show the dropdown when there is input
+        dropdownContent.style.display = 'block';
+
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            const doctorName = option.textContent.toLowerCase();
+
+            if (doctorName.includes(filter)) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
+
+    searchIcon.addEventListener('click', function() {
+        doctorsInput.focus();
+    });
+
+    dropdownContent.addEventListener('click', function(event) {
+        if (event.target.tagName === 'SPAN') {
+            const selectedDoctor = event.target.textContent;
+            const doctorId = event.target.getAttribute('data-id');
+            const doctorSpan = document.createElement('span');
+            doctorSpan.textContent = selectedDoctor;
+            doctorSpan.setAttribute('data-id', doctorId);
+            const removeIcon = document.createElement('span');
+            removeIcon.textContent = 'X';
+            removeIcon.className = 'remove-doctor';
+            removeIcon.addEventListener('click', function() {
+                doctorSpan.remove();
+                if (selectedDoctorsContainer.children.length === 0) {
+                    dropdownContent.style.display = 'block';
+                }
+            });
+            doctorSpan.appendChild(removeIcon);
+            selectedDoctorsContainer.appendChild(doctorSpan);
+
+            // Hide the dropdown after selecting a doctor
+            dropdownContent.style.display = 'none';
+        }
+    });
+
+    // Hide the dropdown when clicking outside the doctors input or dropdown content
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.custom-select')) {
+            dropdownContent.style.display = 'none';
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const selectedDoctorsCount = selectedDoctorsContainer.children.length;
+        const selectedDocumentsCount = document.querySelectorAll('input[name="documents"]:checked').length;
+
+        if (selectedDocumentsCount > 0 && selectedDoctorsCount === 0) {
+            event.preventDefault(); // Prevent form submission
+
+            // Display popup alert
+            window.alert('Please select at least one doctor to share the selected documents ');
+            window.location.reload();
+        }
+        else if(selectedDoctorsCount===0){
+            event.preventDefault();
+            window.alert("No doctor has been selected");
+            window.location.reload();
+
+        }
+    });
+</script>

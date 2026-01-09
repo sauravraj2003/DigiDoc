@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif; /* Updated font-family */
+            font-weight: bold;
+            font-size: 20px;
+            background-color: #f8f8f8;
+        }
+        .navbar {
+            background-color: #f0f0f0;
+            padding: 10px 2%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            margin: 0;
+            font-size: 25px;
+            font-family: Arial, sans-serif; /* Updated font-family */
+        }
+        .search-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 30px;
+        }
+        .example {
+            display: flex;
+            margin: auto;
+            max-width: 500px;
+        }
+        .example input[type=text] {
+            flex: 1;
+            height: 20px;
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #989898;
+            border-radius: 20px;
+            background: #e5e5e5;
+            outline: none;
+            margin-top: 1%;
+            margin-right: 5%;
+            margin-bottom: 0;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+        .example button {
+            padding: 1px 15px;
+            background: #a2a2a2;
+            color: white;
+            font-size: 20px;
+            border: 2px solid #989898;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 0;
+            transition: background-color 0.3s;
+        }
+        .example button:hover {
+            background: #606060;
+        }
+        .user-dropdown {
+            position: relative;
+        }
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            right: 0;
+        }
+        .user-dropdown:hover .user-dropdown-content {
+            display: block;
+        }
+        .user-dropdown-content a {
+            color: black;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            font-family: Arial, sans-serif; /* Updated font-family */
+            font-size: 18px;
+            font-weight: normal;
+        }
+        .user-dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        .fa-search {
+            font-size: 25px;
+        }
+        .fa-user-circle {
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">DocuMED</div>
+        <div class="search-container">
+            <form class="example" action="/action_page.php">
+                <input type="text" placeholder="Search 'Hospital' or 'Doctor'" name="search2">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="user-dropdown">
+            <i class="fa fa-user-circle"></i>
+            <div class="user-dropdown-content">
+                <a href="#">Username</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <!-- Rest of your content goes here -->
+    </div>
+</body>
+</html>

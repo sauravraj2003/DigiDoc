@@ -1,0 +1,329 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Documents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 10px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 25px;
+        }
+        .navbar-brand {
+            margin: 0;
+        }
+        .end-btn {
+            background-color: #daa521;
+            border: none;
+            width: 120px;
+            height: 40px;
+            font-size: 18px;
+            color: #ffffff;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        .end-btn::after {
+            content: "\2192"; /* Unicode for right arrow */
+            margin-left: 5px;
+        }
+        .end-btn:hover {
+            background-color: #c6951b;
+        }
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto; /* Center the form */
+        }
+        h2 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            position: relative;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #2196f3;
+        }
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .custom-select input[type="text"] {
+            width: calc(100% - 30px);
+        }
+        .custom-select .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.2rem;
+            cursor: pointer; /* Add cursor pointer */
+        }
+        .selected-doctors {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .selected-doctors span {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #2196f3;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .selected-doctors span .remove-doctor {
+            color: #fff;
+            cursor: pointer;
+            margin-left: 8px;
+            font-size: 1.2rem;
+        }
+        .selected-doctors span .remove-doctor:hover {
+            color: #f8f8f8;
+        }
+        button[type="submit"] {
+            background-color: #2196f3;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #6c3483;
+        }
+        .custom-select select {
+            height: 200px; /* Set a fixed height */
+            overflow-y: auto; /* Add scrollbar */
+        }
+        
+    
+        /* Style for the bold text */
+        /* Style for the option element */
+option {
+    font-size: 16px;
+    padding: 10px;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    border-bottom: 1px solid #ccc; /* Add a bottom border for separation */
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/* Style for the doctor's name */
+.option-doctor-name {
+    color: #2196f3; /* Change color to a shade of blue */
+}
+
+/* Style for the doctor's username */
+.option-doctor-username {
+    color: #555; /* Change color to a darker shade of gray */
+    font-style: italic; /* Italicize the username */
+}
+
+    </style>
+</head>
+<body style="background-image: url('{% static 'upload.jpg' %}'); background-size: cover;  ">    <nav class="navbar"></nav>
+    <nav class="navbar">
+    <div class="navbar-brand">
+        <a href="{% url 'patient:patient-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+    </div>
+    <button class="end-btn" onclick="location.href='{% url 'home' %}'">Logout</button>
+</nav>
+<br>
+<form method="post">
+    {% csrf_token %}
+    <h2>Share Documents</h2>
+
+    <div class="form-group">
+        <label for="doctors">Select Doctors:</label>
+        <div class="custom-select">
+            <input type="text" class="form-control" id="doctors" placeholder="Search doctors...">
+            <span class="search-icon" id="search-icon"><i class="fas fa-search"></i></span>
+        </div>
+        <select name="doctors" id="doctors-select" class="form-control" multiple style="display: none;">
+            {% for doctor in doctors %}
+            <option value="{{ doctor.id }}">
+                <span class="bold">Name: </span><span class="option-doctor-name">{{ doctor.name }}</span>, 
+                <span class="bold">Username: </span><span class="option-doctor-username">{{ doctor.user }}</span>
+            </option>
+            {% endfor %}
+        </select>
+        
+        
+        <div class="selected-doctors"></div>
+    </div>
+
+    <div class="form-group">
+        <h3>Documents</h3>
+        <div style="max-height: 200px; overflow-y: auto;">
+            {% for document in documents %}
+                <div>
+                    <input type="checkbox" name="documents" value="{{ document.id }}"> 
+                    {{ document.document_name }}, 
+                    <span style="color: #555; font-weight: bold;">Type: {{ document.get_type_display }}</span>,
+                    <span style="color: #555; font-weight: italic;">Author: {% if document.verified %}Doctor{% else %}Patient{% endif %}</span>
+
+                    
+                </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+
+    <button type="submit">Share</button>
+</form>
+
+<script>
+    const doctorsInput = document.getElementById('doctors');
+    const doctorsSelect = document.getElementById('doctors-select');
+    const selectedDoctorsContainer = document.querySelector('.selected-doctors');
+    const searchIcon = document.getElementById('search-icon');
+
+    doctorsInput.addEventListener('focus', function() {
+        doctorsSelect.style.display = 'block';
+    });
+
+    doctorsInput.addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        const options = doctorsSelect.options;
+
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            const doctorName = option.text.toLowerCase();
+
+            if (doctorName.includes(filter)) {
+                option.style.display = 'block';
+            } else {
+                option.style.display = 'none';
+            }
+        }
+    });
+
+    doctorsSelect.addEventListener('change', function() {
+        const selectedDoctors = Array.from(this.selectedOptions).map(option => option.text);
+
+        selectedDoctorsContainer.innerHTML= '';
+
+        selectedDoctors.forEach(doctor => {
+            const doctorSpan = document.createElement('span');
+            doctorSpan.textContent = doctor;
+            const removeIcon = document.createElement('span');
+            removeIcon.textContent = 'X';
+            removeIcon.className = 'remove-doctor';
+            removeIcon.addEventListener('click', function() {
+                const doctorOption = doctorsSelect.querySelector(`option[value="${doctor}"]`);
+                if (doctorOption) {
+                    doctorOption.selected = false;
+                }
+                doctorSpan.remove();
+            });
+            doctorSpan.appendChild(removeIcon);
+            selectedDoctorsContainer.appendChild(doctorSpan);
+        });
+
+        // Hide the dropdown after selecting doctors
+        doctorsSelect.style.display = 'none';
+    });
+
+    selectedDoctorsContainer.addEventListener('click', function(event) {
+        if (event.target.classList.contains('remove-doctor')) {
+            const doctorName = event.target.parentElement.textContent.trim();
+            const doctorOption = doctorsSelect.querySelector(`option[value="${doctorName}"]`);
+            if (doctorOption) {
+                doctorOption.selected = false;
+            }
+            event.target.parentElement.remove();
+        }
+    });
+
+    // Hide the dropdown when clicking outside the doctors input
+    document.addEventListener('click', function(event) {
+        const isClickInside = doctorsInput.contains(event.target);
+
+        if (!isClickInside) {
+            doctorsSelect.style.display = 'none';
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const selectedDoctorsCount = selectedDoctorsContainer.children.length;
+        const selectedDocumentsCount = document.querySelectorAll('input[name="documents"]:checked').length;
+
+        if (selectedDocumentsCount > 0 && selectedDoctorsCount === 0) {
+            event.preventDefault(); // Prevent form submission
+
+            // Display popup alert
+            window.alert('Please select at least one doctor to share the selected documents ');
+            window.location.reload();
+        }
+        else if(selectedDoctorsCount===0){
+            event.preventDefault();
+            window.alert("No doctor has been selected");
+            window.location.reload();
+
+        }
+        else if(selectedDocumentsCount===0){
+            event.preventDefault();
+            window.alert("No document has been selected");
+            window.location.reload();
+        }
+    });
+
+</script>
+</body>
+</html>
+

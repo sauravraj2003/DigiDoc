@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMED Patient Appointments</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+          
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 25px;
+        }
+          
+        .navbar-brand {
+            margin: 0;
+        }
+  
+        .end-buttons {
+            display: flex;
+            align-items: center;
+        }
+  
+        .end-buttons button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #daa521;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+  
+        .end-buttons button:last-child {
+            margin-right: 10px;
+        }
+  
+        .end-buttons button:hover {
+            background-color: #c6951b;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .section {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            width: calc(33.33% - 20px); /* Adjust the width as needed */
+            flex-grow: 1; /* Allow the cards to grow */
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .card h5 {
+            margin: 5px 0;
+            font-size: 18px;
+            color: #666;
+            text-align: center;
+        }
+
+        .card p {
+            margin: 5px 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .card button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            background-color: #0bb7e1;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .card button:hover {
+            background-color: #0a89b3;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            text-align: center;
+            /* color: #0bb7e1; */
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 25px; /* Rounded corners */
+            font-size: 16px;
+            margin-right: 10px;
+            outline: none;
+            width: 300px; /* Adjust width as needed */
+            transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for border and box-shadow */
+        }
+
+        .search-container input[type=text]:focus {
+            border-color: #0bb7e1; /* Change border color on focus */
+            box-shadow: 0 0 5px #0bb7e1; /* Add shadow on focus */
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0bb7e1;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button i {
+            background-color:yellow;
+            margin-right: 5px;
+        }
+
+        .search-container button:hover {
+            background-color: #0a89b3;
+        }
+
+        /* Additional styles for error messages */
+        .error-messages {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .error-message {
+            color: #ff3333;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffe6e6;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static 'app.jpg' %}'); background-size: cover;  ">    <nav class="navbar"></nav>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'doctor:doctor-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <!-- Search container -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for patients by username" onkeyup="searchPatients()">
+            
+        </div>
+        <!-- End buttons -->
+        <div class="end-buttons">
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+    {% if messages %}
+    <div class="error-messages">
+        {% for message in messages %}
+        <p class="error-message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <h1>Your Appointments</h1>
+    <main class="main-content">
+        <section class="section patients">
+            <!-- Appointment cards -->
+            {% for appointment in appointments %}
+            <div class="card" data-username="{{ appointment.patient.user }}">
+                <h3>Patient: {{ appointment.patient.name }}</h3>
+                <h5>UserName: {{ appointment.patient.user }}</h5>
+                <h5>Age: {{ appointment.patient.age }}</h5>
+                <h5>Phone Number: {{ appointment.patient.phone_number }}</h5>
+                <h5>Gender: {{ appointment.patient.gender }}</h5>
+                <h5>Blood Group: {{ appointment.patient.blood_group }}</h5>
+                <h5>Date & Time: {{ appointment.date }}</h5>
+                <!-- Add more appointment details here if needed -->
+            </div>
+            {% empty %}
+            <h2>No Scheduled Appointments</h2>
+            {% endfor %}
+        </section>
+    </main>
+
+    <script>
+        function searchPatients() {
+            // Get input value and convert to lowercase for case-insensitive search
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            // Get all appointment cards
+            var cards = document.getElementsByClassName("card");
+
+            // Loop through all appointment cards
+            for (var i = 0; i < cards.length; i++) {
+                var username = cards[i].getAttribute("data-username").toLowerCase();
+                // Check if the username matches the search input
+                if (username.indexOf(input) > -1) {
+                    // Show the card if the username matches
+                    cards[i].style.display = "";
+                } else {
+                    // Hide the card if the username doesn't match
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

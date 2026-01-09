@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMED Doctor Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+          
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 30px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 25px;
+        }
+          
+        .navbar-brand {
+            margin: 0;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #2196f3;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-container button i {
+            margin-right: 5px;
+        }
+
+        .search-container button:hover {
+            background-color: #0b5a7e;
+        }
+
+        .end-buttons {
+            display: flex;
+            align-items: center;
+        }
+
+        .end-buttons button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #daa521;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .end-buttons button:last-child {
+            margin-right: 10px;
+        }
+
+        .end-buttons button:hover {
+            background-color: #c6951b;
+        }
+
+        .main-content {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            /* {% comment %} align-items: center; {% endcomment %} */
+            min-height: calc(100vh - 100px); /* Adjusted height to accommodate the navbar */
+        }
+
+        .section {
+            width: 100%;
+            max-width: 800px; /* Limiting the width of the patient cards */
+        }
+
+        .card {
+            background-color: #f2f2f2;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .view-documents {
+            background-color: #4CAF50;
+        }
+
+        .add-follow-up {
+            background-color: #2196f3;
+        }
+
+        .delete-patient {
+            background-color: #f44336;
+        }
+
+        .card button:hover {
+            background-color: #333;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 10px; /* Reduced margin */
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+          }
+          .error-messages {
+            text-align: center;
+            margin-top: 20px; /* Add some space above the error messages */
+        }
+        
+        .error-message {
+            color: #ff3333; /* Red color for error messages */
+            font-size: 24px; /* Adjust the font size as needed */
+            font-weight: bold; /* Make the text bold */
+            text-transform: uppercase; /* Convert text to uppercase */
+            padding: 10px; /* Add padding around the text */
+            border-radius: 5px; /* Add rounded corners */
+            background-color: #ffe6e6; /* Light red background color */
+            display: inline-block; /* Make each message display inline */
+            margin-bottom: 10px; /* Add some space between messages */
+        }
+        
+        
+        
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'doctor:doctor-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for patients" onkeyup="searchPatients()">
+            <button><i class="fa fa-search"></i>Search</button>
+        </div>
+        <div class="end-buttons">
+            <form action="{% url 'doctor:view_appointments' %}" method="get">
+                <button type="submit">View Appointments</button>
+            </form>
+            <form action="{% url 'doctor:update' %}" method="get">
+                <button type="submit">Update Profile</button>
+            </form>
+            <form action="{% url 'profile' user.username %}" method="get">
+                <button type="submit">View Profile</button>
+            </form>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+    {% if messages %}
+<div class="error-messages">
+    {% for message in messages %}
+    <p class="error-message">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+    
+    <h1>Patients</h1>
+    <main class="main-content">
+        <section class="section patients">
+            <!-- Patient cards -->
+            {% for patient in shared_patients %}
+            <div class="card patient-card" data-name="{{ patient.name }}">
+                <p>Name: {{ patient.name }}</p>
+                <p>Age: {{ patient.age }}</p>
+                <p>Gender: {{patient.gender}}</p>
+                <p>Phone Number: {{patient.phone_number}}</p>
+                <p>Blood Group: {{patient.blood_group}}</p>
+                <!-- View Patient Documents button -->
+                <a href="{% url 'doctor:patient_documents' patient_username=patient.user.username %}">
+                    <button class="view-documents">View Patient Documents</button>
+                </a>
+                
+                <!-- Add Follow-up Date button -->
+                <a href="{% url 'doctor:appointmentadd' patient.user.username %}"><button class="add-follow-up">Add Follow-up Date</button></a>
+                <!-- Delete button -->
+                {% comment %} <button class="delete-patient" onclick="deletePatient(this,'{{patient.id}}')">Delete</button> {% endcomment %}
+            </div>
+            {% empty %}
+            <h2>No current patients</h2>
+            {% endfor %}
+        </section>
+    </main>
+
+    <script>
+        function searchPatients() {
+            // Get input value and convert to lowercase for case-insensitive search
+            var input = document.getElementById("searchInput").value.toLowerCase();
+            // Get all patient cards
+            var cards = document.getElementsByClassName("patient-card");
+
+            // Loop through all patient cards
+            for (var i = 0; i < cards.length; i++) {
+                var name = cards[i].getAttribute("data-name").toLowerCase();
+                // Check if the patient's name matches the search input
+                if (name.indexOf(input) > -1) {
+                    // Show the card if the name matches
+                    cards[i].style.display = "";
+                } else {
+                    // Hide the card if the name doesn't match
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

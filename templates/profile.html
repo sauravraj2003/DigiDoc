@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocuMED Doctor Profile</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+        }
+          
+        .navbar {
+            background-color: #0bb7e1;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 25px;
+        }
+          
+        .navbar-brand {
+            margin: 0;
+        }
+  
+        .end-buttons {
+            display: flex;
+            align-items: center;
+        }
+  
+        .end-buttons button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #daa521;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+  
+        .end-buttons button:last-child {
+            margin-right: 10px;
+        }
+  
+        .end-buttons button:hover {
+            background-color: #c6951b;
+        }
+          
+          
+  
+  
+  
+        
+
+        
+
+        .main-content {
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            /* {% comment %} align-items: center; {% endcomment %} */
+            min-height: calc(100vh - 100px); /* Adjusted height to accommodate the navbar */
+        }
+
+        .section {
+            width: 100%;
+            max-width: 800px; /* Limiting the width of the patient cards */
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .card button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .view-documents {
+            background-color: #4CAF50;
+        }
+
+        .add-follow-up {
+            background-color: #2196f3;
+        }
+
+        .delete-patient {
+            background-color: #f44336;
+        }
+
+        .card button:hover {
+            background-color: #333;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 10px; /* Reduced margin */
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body style="background-image: url('{% static 'profile.jpg' %}'); background-size: cover;  ">    <nav class="navbar"></nav>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="{% url 'doctor:doctor-home' %}" style="text-decoration: none; color: inherit;">DocuMED</a>
+        </div>
+        <div class="patient-reg">View Profile</div>
+        <div class="end-buttons">
+            
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit1">Logout</button>
+            </form>
+        </div>
+    </nav>
+    <h1>{{profile.doctor_user.name}}'s Profile</h1>
+    <main class="main-content">
+        <section class="section patients">
+            <div class="card patient-card">
+                <h3>Name: {{ profile.doctor_user.name }}</h3>
+                <h3>Specialization: {{ profile.specialization }}</h3>
+                <h3>Hospital: {{ profile.hospital }}</h3>
+                <h3>Working Days:
+                    {% for day in profile.working_days.all %}
+                        {{ day.name }}
+                        {% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </h3>
+                <h3>Phone Number: {{profile.doctor_user.phone_number}}</h3>
+                <h3>License: <a href="{{profile.doctor_user.license.url}}">{{profile.doctor_user.license.name}}</a></h3>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
